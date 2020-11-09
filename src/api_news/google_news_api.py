@@ -26,7 +26,6 @@ class GoogleNews:
 
     def get_news(self, num_links=10, keyword="apple", sort_by='popularity',
                 from_date='2020-10-10', to_date='2020-11-07'):
-        
 
         #check dates format
         self.check_date_formats(from_date=from_date, to_date=to_date)
