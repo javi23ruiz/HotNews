@@ -2,13 +2,12 @@ import os
 import logging
 
 ##app imports
-from utils import load_json
 from api_news.google_news_api import GoogleNews
 
 #environment variables
 PROJECT_PATH = os.path.dirname(os.path.abspath(__file__))
 os.environ['PROJECT_PATH'] = PROJECT_PATH
-ARTIFACTS_PATH = os.path.join(PROJECT_PATH, 'artifacts')
+ARTIFACTS_PATH = os.path.join(PROJECT_PATH.replace('src', ''), 'artifacts')
 os.environ['ARTIFACTS_PATH'] = ARTIFACTS_PATH
 #logging formatting
 log_formatter = '%(asctime)s %(levelname)s %(filename)s(%(lineno)d) ::: %(message)s'
@@ -21,5 +20,7 @@ if __name__ == "__main__":
     logger.info('Dummy execution')
 
     google = GoogleNews()
-    
+    google.get_news()
+
     pass
+
