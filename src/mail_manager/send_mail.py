@@ -72,6 +72,7 @@ class EmailSender:
             Returns:
                 bool: True if mail was sent successfully and False if it fails in the execution.
         """
+
         try: 
             message = MIMEMultipart("alternative")
             message["Subject"] = "News Letter"
