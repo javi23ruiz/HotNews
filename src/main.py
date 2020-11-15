@@ -3,6 +3,7 @@ import logging
 
 ##app imports
 from api_news.google_news_api import GoogleNews
+from mail_manager.send_mail import EmailSender
 
 #environment variables
 PROJECT_PATH = os.path.dirname(os.path.abspath(__file__))
@@ -16,11 +17,18 @@ logging.basicConfig(level=logging.INFO, format=log_formatter, datefmt='%d-%m-%y 
 
 if __name__ == "__main__":
     '''Code that will be executed'''
-    logger.info(os.getenv('ARTIFACTS_PATH'))
     logger.info('Dummy execution')
 
+    # get news
     google = GoogleNews()
-    google.get_news()
+    news_link, keyword = google.get_news()
+
+    # send mail
+    mail = EmailSender(keyword=keyword)
+    if mail.send_email_with_news(news_link_info=news_link):
+        logger.info(f"Execeution finished successfully")
+    else:
+        logger.info(f"Error sending the email")
 
     pass
 
