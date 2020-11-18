@@ -1,5 +1,5 @@
 # CompanyTracker
-The goal of the project is to catch sparsed news across the web, filter them, 
+The goal of the project is to retrieve scattered news of a company on the web, filter them, 
 send an email, and generate a summary and podcast with the news. 
 
 ## Motivation of the project?
@@ -7,8 +7,12 @@ Nowadays there are a wide range of different sources of information. If an indiv
 
 ## Main features of the project
 
-1. Mail Sender: Module to send an email to a user with the links of the news including a summary (applying NLP techniques), source of the news, date published and an image if found. 
+1. Mail Sender: Module to send an email to a user with the links of the news including a summary (applying NLP techniques), source of the news, date published and an image if found in teh article. 
 2. Podcast generator: Module to generate a .mp3 file with the audio of the summary of the news. 
+3. The News are generated using several APIs:
+    - NEWS API: HTTP REST API for searching and retrieving articles all over the web. The free version is           implemented in this application, therefore you can only go back in time one month. The articles are ranked by relevancy and by default the application returns 10 articles. A keyword must be specified by the user to search for that specific company. 
+    - Bloomberg API: 
+    - 
 
 ## Installation
 
