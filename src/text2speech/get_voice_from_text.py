@@ -19,11 +19,12 @@ class Parrot:
         self.language = language
 
     def generate_audio(self, news_link, keyword, 
-                        download_folder=os.path.join(os.getenv['PROJECT_PATH'], 'podcast')):
+                        ):
 
         try: 
             #first concatenate all the text in one string to generate the podcast.
             start_time = time.time()
+            
             today = datetime.today()
             day, week_day, month, year = today.strftime("%d"), today.strftime("%A"), \
                                         today.strftime("%B"), today.strftime("%Y")
@@ -40,8 +41,11 @@ class Parrot:
                 podcast_text += news_text + news['description']
             # make request to google 
             podcast = gtts.gTTS(podcast_text, lang=self.language)
+
+            download_folder = os.path.join(os.getenv('PROJECT_PATH').replace('src', ''), 'output')
             save_name = "_".join([keyword, day, month, year])
-            podcast.save(f"{save_name}.mp3")
+            download_name = os.path.join(download_folder, f"{save_name}.mp3")
+            podcast.save(download_name)
             logger.info(f"Podcast generated and saved in {round(time.time() - start_time, 4)} seconds")
             #playsound("hello.mp3")
             return True

@@ -23,15 +23,18 @@ if __name__ == "__main__":
     start_time = time.time()
     # get news
     google = GoogleNews()
-    news_link, keyword = google.get_news()
+    keyword = "Virgin Galactic"
+    news_link, keyword = google.get_news(keyword=keyword)
     # send mail
     mail = EmailSender(keyword=keyword)
-    if mail.send_email_with_news(news_link_info=news_link):
-        parrot = Parrot()
-        parrot.generate_audio(news_link=news_link, keyword=keyword)
-        logger.info("Audio generated")
-        logger.info(f"Main program finished successfully in {round(time.time() - start_time, 4)} seconds")
-    else:
-        logger.info(f"Error sending the email")
+    send_mail = True
+    if send_mail:
+        if mail.send_email_with_news(news_link_info=news_link):
+            parrot = Parrot()
+            parrot.generate_audio(news_link=news_link, keyword=keyword)
+            logger.info("Audio generated")
+            logger.info(f"Main program finished successfully in {round(time.time() - start_time, 4)} seconds")
+        else:
+            logger.info("Error sending the email")
 
 

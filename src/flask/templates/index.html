@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="{{ url_for('static', filename= 'css/style.css') }}">
+    <title>FlaskBlog</title>
+</head>
+<body>
+   <h1>Welcome to the Company Tracker</h1>
+   <p> This is the Daily News Blog for the company Virgin Galactic. The news are retrieved from 
+       the NewsApi developed by Google. Please enter a company name and an email address. 
+       After the appplication is executed, an email will be sent and a podcast will be generated to listen to
+       the summary of the news. 
+   </p>
+
+   <form method="post">
+        <input type="text" name="company_name"></input>
+        <input type="submit" value="CompanyName"></input>
+    </form>
+
+    <form method="post">
+        <input type="text" name="email"></input>
+        <input type="submit" value="Email"></input>
+    </form>
+
+</body>
+</html>
