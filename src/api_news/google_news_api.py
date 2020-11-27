@@ -64,7 +64,7 @@ class GoogleNews:
 
         #get the text for all the parragraphs. Tag p.
         for link in news_link:
-            logging.info(f"Proccessing: {link['url']}")
+            logger.debug(f"Proccessing: {link['url']}")
             try:
                 link_result = requests.get(link['url'])
                 soup = BeautifulSoup(link_result.text, "lxml")

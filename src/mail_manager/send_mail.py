@@ -93,7 +93,7 @@ class EmailSender:
             with smtplib.SMTP_SSL("smtp.gmail.com", port, context=context) as server: #Added Gmails SMTP Server
                 server.login(self.email_from, self.email_password) #Login SMTP Library using your GMAIL
                 server.sendmail(self.email_from, self.email_to, message.as_string())
-                logger.info(f"Email sent to {self.email_to} in {round(time.time() - start_time, 5)}")
+                logger.info(f"Email sent to {self.email_to} in {round(time.time() - start_time, 4)} seconds")
                 return True
 
         except Exception as e:
