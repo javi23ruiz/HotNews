@@ -13,8 +13,8 @@ logging.basicConfig(level=logging.INFO, format=log_formatter, datefmt='%d-%m-%y 
 
 class GoogleNews:
     def __init__(self):
-        self.api_key = load_json(os.path.join(os.getenv('ARTIFACTS_PATH'), 'credentials.json'))['google_news']['API_KEY']
-        #self.api_key = '6a436945bdd84b23a35b0cd91f18797d'
+        #self.api_key = load_json(os.path.join(os.getenv('ARTIFACTS_PATH'), 'credentials.json'))['google_news']['API_KEY']
+        self.api_key = '6a436945bdd84b23a35b0cd91f18797d'
         
     def check_date_formats(self, from_date, to_date):
         date_format = "%Y-%m-%d"

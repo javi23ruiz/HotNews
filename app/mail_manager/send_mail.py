@@ -15,13 +15,13 @@ class EmailSender:
     """ 
     Class to send an email with the news link. 
     """
-    def __init__(self, keyword):
+    def __init__(self, keyword, email_to):
         """ 
         The constructor for Email SEnder class class. 
         Parameters: 
            keyword (str): Keyword of the search    
         """
-        self.email_to = 'jrruiz1995@gmail.com'
+        self.email_to = email_to
         self.email_from = 'tracker.news.web@gmail.com'
         self.email_password = 'spyder.web727'
         self.keyword = keyword
