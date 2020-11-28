@@ -96,6 +96,8 @@ class EmailSender:
                 logger.info(f"Email sent to {self.email_to} in {round(time.time() - start_time, 4)} seconds")
                 return True
 
+        
+        # TODO: manage mail exceptions!!
         except Exception as e:
             logger.info(f"Error occured while sending email: {e}")
             return False

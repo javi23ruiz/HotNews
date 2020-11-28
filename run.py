@@ -23,6 +23,7 @@ app = Flask(__name__)
 
 @app.route('/')
 def home():
+    news_link = [{'url':'urlll', 'img':'imggg'}, {'url':'urlll2', 'img':'imggg2'}]
     return render_template('home.html')
 
 @app.route('/', methods=['POST'])
@@ -47,7 +48,7 @@ def my_email_post():
         else:
             logger.info("Error sending the email")
 
-    return render_template('home.html')
+    return render_template('news.html', name=company_name, news_link=news_link)
 
 if __name__ == '__main__':
     app.run(debug=True)

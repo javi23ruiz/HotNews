@@ -4,7 +4,7 @@ import requests
 
 from bs4 import BeautifulSoup
 from datetime import datetime, timedelta
-from .utils import load_json
+#from .utils import load_json
 
 log_formatter = '%(asctime)s %(levelname)s %(filename)s(%(lineno)d) ::: %(message)s'
 logger = logging.getLogger(__name__)
@@ -24,7 +24,7 @@ class GoogleNews:
         except ValueError:
             raise ValueError("Incorrect date format, should be YYYY-MM-DD")
 
-    def get_news(self, num_links=10, keyword="pfizer", sort_by='relevancy',
+    def get_news(self, keyword, num_links=3, sort_by='relevancy',
                 from_date=(datetime.today() - timedelta(days=15)).strftime('%Y-%m-%d'), 
                 to_date=datetime.today().strftime('%Y-%m-%d')):
     
@@ -86,5 +86,5 @@ if __name__ == "__main__":
     # print(json_path)
     google = GoogleNews()
     self = google
-    news_link = google.get_news()
-    print(news_link)
+    news_link, _ = google.get_news(keyword='JP Morgan')
+    print(news_link[-1])
