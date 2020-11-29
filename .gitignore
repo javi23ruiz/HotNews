@@ -131,3 +131,5 @@ dmypy.json
 # Visual Studio Configuration
 .vscode/
 
+# Flask app
+instance/

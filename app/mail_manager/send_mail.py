@@ -3,6 +3,7 @@
 import time
 import logging
 import smtplib, ssl
+from smtplib import SMTPRecipientsRefused
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 
@@ -19,7 +20,8 @@ class EmailSender:
         """ 
         The constructor for Email SEnder class class. 
         Parameters: 
-           keyword (str): Keyword of the search    
+           keyword (str): Keyword of the search   
+           email_to (str): email address of the reciptent 
         """
         self.email_to = email_to
         self.email_from = 'tracker.news.web@gmail.com'
@@ -73,7 +75,8 @@ class EmailSender:
                 bool: True if mail was sent successfully and False if it fails in the execution.
         """
 
-        try: 
+
+        try:
             message = MIMEMultipart("alternative")
             message["Subject"] = "News Letter"
             message["From"] = self.email_from
@@ -96,10 +99,15 @@ class EmailSender:
                 logger.info(f"Email sent to {self.email_to} in {round(time.time() - start_time, 4)} seconds")
                 return True
 
-        
-        # TODO: manage mail exceptions!!
-        except Exception as e:
-            logger.info(f"Error occured while sending email: {e}")
+        # manage mail exceptions
+        except SMTPRecipientsRefused as e:
+            logger.info(f"Error occured while sending email SMTPRecipientsRefused: {e}")
             return False
 
+
+
+
         
+if __name__ == '__main__':
+    mail = EmailSender(keyword='company_name', email_to='ffff')
+    mail.send_email_with_news(news_link_info=[])

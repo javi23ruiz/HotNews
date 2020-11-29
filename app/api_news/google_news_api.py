@@ -6,10 +6,15 @@ from bs4 import BeautifulSoup
 from datetime import datetime, timedelta
 #from .utils import load_json
 
+from flask import current_app
+
 log_formatter = '%(asctime)s %(levelname)s %(filename)s(%(lineno)d) ::: %(message)s'
 logger = logging.getLogger(__name__)
 logging.basicConfig(level=logging.INFO, format=log_formatter, datefmt='%d-%m-%y %H:%M:%S')
 
+logger.info(current_app)
+logger.info(current_app.config["MAIL_FROM_EMAIL"])
+logger.info(current_app.config["GOOGLE_API_KEY"])
 
 class GoogleNews:
     def __init__(self):
@@ -24,7 +29,7 @@ class GoogleNews:
         except ValueError:
             raise ValueError("Incorrect date format, should be YYYY-MM-DD")
 
-    def get_news(self, keyword, num_links=3, sort_by='relevancy',
+    def get_news(self, keyword, num_links=12, sort_by='relevancy',
                 from_date=(datetime.today() - timedelta(days=15)).strftime('%Y-%m-%d'), 
                 to_date=datetime.today().strftime('%Y-%m-%d')):
     
@@ -84,7 +89,10 @@ if __name__ == "__main__":
     print('yeahhh!')
     # json_path = os.path.join(os.getenv('ARTIFACTS_PATH'), 'credentials.json')
     # print(json_path)
+    #empty list evaluate to False
     google = GoogleNews()
     self = google
-    news_link, _ = google.get_news(keyword='JP Morgan')
-    print(news_link[-1])
+    news_link, _ = google.get_news(keyword='CrowdAI')
+    if not news_link:
+        print('empty list')
+    print(news_link)

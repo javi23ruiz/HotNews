@@ -38,7 +38,7 @@ class Parrot:
                 news_text = f"The {num2words(num + 1, to='ordinal_num')} article is: \
                                         {news['title']}. The summary of this article \
                                         from the source {news['source']['name']} is the following. "
-                podcast_text += news_text + news['description']
+                podcast_text += news_text + str(news['description'] or '')
             # make request to google 
             podcast = gtts.gTTS(podcast_text, lang=self.language)
 
