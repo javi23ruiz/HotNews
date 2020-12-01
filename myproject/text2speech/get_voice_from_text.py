@@ -3,6 +3,7 @@ import logging
 import time
 import gtts
 
+from gtts import gTTSError
 from datetime import datetime
 from num2words import num2words
 from playsound import playsound
@@ -18,17 +19,16 @@ class Parrot:
     def __init__(self, language='en'):
         self.language = language
 
-    def generate_audio(self, news_link, keyword, 
-                        ):
+    def generate_audio(self, news_link, keyword):
 
         try: 
-            #first concatenate all the text in one string to generate the podcast.
+        #first concatenate all the text in one string to generate the podcast.
             start_time = time.time()
             
             today = datetime.today()
             day, week_day, month, year = today.strftime("%d"), today.strftime("%A"), \
                                         today.strftime("%B"), today.strftime("%Y")
- 
+
             podcast_text = f"Hello dear user. How are you today? \
                                 Welcome to the daily podcast for {keyword}. \
                                 Today´s is  {week_day} the {day}th of {month} of {year}. \
@@ -50,8 +50,12 @@ class Parrot:
             #playsound("hello.mp3")
             return True
 
-        except Exception as e:
-            raise Exception(f"Error generating the audio in the Parrot class: {e}")
+        except gTTSError as e:
+            logger.info(f"Error generating the audio in the Parrot class: {e}")
+            # TODO: display gtts.tts.gTTSError: 502 (Bad Gateway) from TTS API. 
+            # Probable cause: Uptream API error. Try again later. If this error occurrs
+            return False
+    
         
 
 

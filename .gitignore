@@ -133,3 +133,6 @@ dmypy.json
 
 # Flask app
 instance/
+
+# output audios
+output/

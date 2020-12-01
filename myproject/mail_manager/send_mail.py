@@ -7,6 +7,8 @@ from smtplib import SMTPRecipientsRefused
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 
+from myproject import app
+
 log_formatter = '%(asctime)s %(levelname)s %(filename)s(%(lineno)d) ::: %(message)s'
 logger = logging.getLogger(__name__)
 logging.basicConfig(level=logging.INFO, format=log_formatter, datefmt='%d-%m-%y %H:%M:%S')
@@ -24,8 +26,8 @@ class EmailSender:
            email_to (str): email address of the reciptent 
         """
         self.email_to = email_to
-        self.email_from = 'tracker.news.web@gmail.com'
-        self.email_password = 'spyder.web727'
+        self.email_from = app.config['MAIL_FROM_EMAIL']
+        self.email_password = app.config['EMAIL_FROM_PASSWORD']
         self.keyword = keyword
 
     def generate_html_email(self, news_link_info):
@@ -104,10 +106,7 @@ class EmailSender:
             logger.info(f"Error occured while sending email SMTPRecipientsRefused: {e}")
             return False
 
-
-
-
-        
+       
 if __name__ == '__main__':
     mail = EmailSender(keyword='company_name', email_to='ffff')
     mail.send_email_with_news(news_link_info=[])

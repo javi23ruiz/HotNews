@@ -19,8 +19,6 @@ os.environ['PROJECT_PATH'] = PROJECT_PATH
 ARTIFACTS_PATH = os.path.join(PROJECT_PATH.replace('src', ''), 'artifacts')
 os.environ['ARTIFACTS_PATH'] = ARTIFACTS_PATH
 
-
-
 app = Flask(__name__, instance_relative_config=True)
 #app.config.from_object('config')
 app.config.from_pyfile('config.py')
@@ -53,8 +51,8 @@ def my_email_post():
         news_link, keyword = google.get_news(keyword=company_name)
         if not news_link:
             return render_template('empty_search.html', name=company_name)
+
         # send mail
-        
         if send_mail:
             mail = EmailSender(keyword=company_name, email_to=email)
             if mail.send_email_with_news(news_link_info=news_link):
