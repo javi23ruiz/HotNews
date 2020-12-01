@@ -9,9 +9,9 @@ logger = logging.getLogger(__name__)
 logging.basicConfig(level=logging.INFO, format=log_formatter, datefmt='%d-%m-%y %H:%M:%S')
 
 ##app imports
-from app.api_news.google_news_api import GoogleNews
-from app.mail_manager.send_mail import EmailSender
-from app.text2speech.get_voice_from_text import Parrot
+from myproject.api_news.google_news_api import GoogleNews
+from myproject.mail_manager.send_mail import EmailSender
+from myproject.text2speech.get_voice_from_text import Parrot
 
 #environment variables
 PROJECT_PATH = os.path.dirname(os.path.abspath(__file__))
@@ -22,11 +22,12 @@ os.environ['ARTIFACTS_PATH'] = ARTIFACTS_PATH
 
 
 app = Flask(__name__, instance_relative_config=True)
-    
-app.config.from_object('config')
+#app.config.from_object('config')
 app.config.from_pyfile('config.py')
-
-# TODO : Dynamic route
+print(app.config['GOOGLE_API_KEY'])
+print(app.config['EMAIL_FROM_PASSWORD'])
+#print(app.config)
+# TODO : Dynamic route/ Blueprints
 
 
 @app.route('/')
@@ -73,6 +74,7 @@ def my_email_post():
 
 if __name__ == '__main__':
     app.run(debug=True)
+
 
 
 

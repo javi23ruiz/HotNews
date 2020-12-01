@@ -6,15 +6,12 @@ from bs4 import BeautifulSoup
 from datetime import datetime, timedelta
 #from .utils import load_json
 
-from flask import current_app
+from run import app
 
 log_formatter = '%(asctime)s %(levelname)s %(filename)s(%(lineno)d) ::: %(message)s'
 logger = logging.getLogger(__name__)
 logging.basicConfig(level=logging.INFO, format=log_formatter, datefmt='%d-%m-%y %H:%M:%S')
 
-logger.info(current_app)
-logger.info(current_app.config["MAIL_FROM_EMAIL"])
-logger.info(current_app.config["GOOGLE_API_KEY"])
 
 class GoogleNews:
     def __init__(self):
