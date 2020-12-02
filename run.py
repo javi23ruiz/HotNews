@@ -21,11 +21,11 @@ os.environ['ARTIFACTS_PATH'] = ARTIFACTS_PATH
 
 app = Flask(__name__, instance_relative_config=True)
 #app.config.from_object('config')
-app.config.from_pyfile('config.py')
-print(app.config['GOOGLE_API_KEY'])
-print(app.config['EMAIL_FROM_PASSWORD'])
+# app.config.from_pyfile('config.py')
+# print(app.config['GOOGLE_API_KEY'])
+# print(app.config['EMAIL_FROM_PASSWORD'])
 #print(app.config)
-# TODO : Dynamic route/ Blueprints
+# TODO : Set Configuration
 
 
 @app.route('/')
