@@ -3,8 +3,11 @@
 import time
 import logging
 import smtplib, ssl
+from smtplib import SMTPRecipientsRefused
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
+
+from myproject import app
 
 log_formatter = '%(asctime)s %(levelname)s %(filename)s(%(lineno)d) ::: %(message)s'
 logger = logging.getLogger(__name__)
@@ -15,15 +18,16 @@ class EmailSender:
     """ 
     Class to send an email with the news link. 
     """
-    def __init__(self, keyword):
+    def __init__(self, keyword, email_to):
         """ 
         The constructor for Email SEnder class class. 
         Parameters: 
-           keyword (str): Keyword of the search    
+           keyword (str): Keyword of the search   
+           email_to (str): email address of the reciptent 
         """
-        self.email_to = 'jrruiz1995@gmail.com'
-        self.email_from = 'tracker.news.web@gmail.com'
-        self.email_password = 'spyder.web727'
+        self.email_to = email_to
+        self.email_from = app.config['MAIL_FROM_EMAIL']
+        self.email_password = app.config['EMAIL_FROM_PASSWORD']
         self.keyword = keyword
 
     def generate_html_email(self, news_link_info):
@@ -73,7 +77,8 @@ class EmailSender:
                 bool: True if mail was sent successfully and False if it fails in the execution.
         """
 
-        try: 
+
+        try:
             message = MIMEMultipart("alternative")
             message["Subject"] = "News Letter"
             message["From"] = self.email_from
@@ -96,8 +101,12 @@ class EmailSender:
                 logger.info(f"Email sent to {self.email_to} in {round(time.time() - start_time, 4)} seconds")
                 return True
 
-        except Exception as e:
-            logger.info(f"Error occured while sending email: {e}")
+        # manage mail exceptions
+        except SMTPRecipientsRefused as e:
+            logger.info(f"Error occured while sending email SMTPRecipientsRefused: {e}")
             return False
 
-        
+       
+if __name__ == '__main__':
+    mail = EmailSender(keyword='company_name', email_to='ffff')
+    mail.send_email_with_news(news_link_info=[])

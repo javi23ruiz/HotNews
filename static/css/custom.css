@@ -1,0 +1,8 @@
+h1 {
+    text-align: center;
+    margin: 0px auto;
+}
+
+body {
+    background-image: url("{{ url_for ('static', filename='images/javier.jpg')}}");
+}
