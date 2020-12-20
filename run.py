@@ -28,9 +28,14 @@ app = Flask(__name__, instance_relative_config=True)
 # TODO : Set Configuration
 
 
+#@app.route('/')
+#def email():
+#    return render_template('home_new.html')
+
 @app.route('/')
 def home():
     return render_template('home.html')
+
 
 @app.route('/', methods=['POST'])
 def my_email_post():
