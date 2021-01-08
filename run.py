@@ -33,12 +33,25 @@ app = Flask(__name__, instance_relative_config=True)
 #    return render_template('home_new.html')
 
 @app.route('/')
+@app.route('/home')
 def home():
-    return render_template('home.html')
+    return render_template('home.html', title='Home Page')
+    
+@app.route('/word_cloud')
+def word_cloud():
+    return render_template('word_cloud.html', title='Word Cloud')
+
+@app.route('/podcast')
+def podcast():
+    return render_template('podcast.html', title='Podcast')
+
+@app.route('/email')
+def email():
+    return render_template('email.html', title='Email')
 
 
-@app.route('/', methods=['POST'])
-def my_email_post():
+@app.route('/news', methods=['POST'])
+def news():
     if request.method == 'POST':
         start_time = time.time()
         send_mail = True
