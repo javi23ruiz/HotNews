@@ -1,10 +1,10 @@
 import logging 
 import time
 import os
-from flask import Flask, render_template, request, current_app
-
+from flask import Flask, render_template, request, current_app, redirect, url_for
+from flask_caching import Cache
 #logging formatting
-log_formatter = '%(asctime)s %(levelname)s %(filename)s(%(lineno)d) ::: %(message)s'
+log_formatter = '%(asctime)s %(levelname)s %(filename)s(%(lineno)d) >>> %(message)s'
 logger = logging.getLogger(__name__)
 logging.basicConfig(level=logging.INFO, format=log_formatter, datefmt='%d-%m-%y %H:%M:%S')
 
@@ -20,6 +20,10 @@ ARTIFACTS_PATH = os.path.join(PROJECT_PATH.replace('src', ''), 'artifacts')
 os.environ['ARTIFACTS_PATH'] = ARTIFACTS_PATH
 
 app = Flask(__name__, instance_relative_config=True)
+
+cache = Cache()
+app.config['CACHE_TYPE'] = 'simple'
+cache.init_app(app)
 #app.config.from_object('config')
 # app.config.from_pyfile('config.py')
 # print(app.config['GOOGLE_API_KEY'])
@@ -27,13 +31,61 @@ app = Flask(__name__, instance_relative_config=True)
 #print(app.config)
 # TODO : Set Configuration
 
-
-@app.route('/')
+@app.route('/', methods=['POST', 'GET'])
+@app.route('/home', methods=['POST', 'GET'])
+#@cache.cached()
 def home():
-    return render_template('home.html')
+    if request.method == 'POST':
+        company_name = request.form['company_name']
+        logger.info(company_name)
 
-@app.route('/', methods=['POST'])
-def my_email_post():
+        news_link, keyword = get_google_news(company_name)
+        if not news_link:
+            return render_template('empty_search.html', name=company_name)
+
+        return redirect(url_for('news'))
+    else:
+        return render_template('home.html', title='HOME')
+
+#cache the result
+@cache.memoize()
+def get_google_news(company_name):
+    google = GoogleNews()
+    news_link, keyword = google.get_news(keyword=company_name)
+    cache.set('news_link', news_link)
+    cache.set('keyword', keyword)
+    return news_link, keyword
+
+@app.route('/news')
+def news():
+    #get results from cache
+    company_name = cache.get('keyword')
+    news_link = cache.get('news_link')
+    if not news_link: 
+        template_args = {}
+        return render_template('news.html', **template_args)
+    news_link = [news_link[n:n+4] for n in range(0, len(news_link), 4)]
+    template_args = dict(name=company_name, news_link=news_link)
+    return render_template('news.html', **template_args)
+
+@app.route('/word_cloud')
+def word_cloud():
+    return render_template('word_cloud.html', title='Word Cloud')
+
+@app.route('/podcast')
+def podcast():
+    return render_template('podcast.html', title='Podcast')
+
+@app.route('/email')
+def email():
+    return render_template('email.html', title='Email')
+
+
+
+
+####################
+@app.route('/newsold', methods=['POST'])
+def news_old():
     if request.method == 'POST':
         start_time = time.time()
         send_mail = True
