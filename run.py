@@ -76,8 +76,28 @@ def word_cloud():
 def podcast():
     return render_template('podcast.html', title='Podcast')
 
-@app.route('/email')
+@app.route('/email', methods=['GET', 'POST'])
 def email():
+    if request.method == 'POST':
+        start_time = time.time()
+        email = request.form['email']
+        logger.info(f"Email To: {email}")
+        send_mail = True
+        if email == '' or '@' not in email:
+            logger.warning(f"Email address not valid, email will not be sent.")
+            send_mail = False
+
+        #get results from cache
+        company_name = cache.get('keyword')
+        news_link = cache.get('news_link')
+
+        # send mail
+        if send_mail:
+            mail = EmailSender(keyword=company_name, email_to=email)
+            if mail.send_email_with_news(news_link_info=news_link):
+                logger.info(f"Main program finished successfully in {round(time.time() - start_time, 4)} seconds")
+            else:
+                logger.info("Error sending the email")
     return render_template('email.html', title='Email')
 
 

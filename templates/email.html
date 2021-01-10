@@ -1,1 +1,24 @@
 {% extends 'layouts.html'%}
+{% block content%}
+<div class="jumbotron">
+    <h2 class="display-4">Send Mail</h2>
+    <br>
+    <p class="lead"> This section is used to send an email with the news .</p>
+    <ul class="list-group">
+      <li> You will recieve an email from the account tracker.news.web@gmail.com.</li>
+      <li> Your email account WILL NOT be stored. </li>
+      <li>Please note that before submitting your email account, you must have sent the request with the company name. Otherwise, the email will be blank.</li>
+    </ul>
+</div>
+
+<form method="post">
+    <div class="form-group">
+        <label for="exampleInputEmail1">Email address</label>
+        <input type="email" class="form-control" name=email id="exampleInputEmail1" placeholder="name@example.com" aria-describedby="emailHelp">
+        <small id="email" class="form-text text-muted">We'll never share your email with anyone else.</small>
+    </div>
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+
+
+{%endblock content%}
