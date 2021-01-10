@@ -20,6 +20,7 @@ ARTIFACTS_PATH = os.path.join(PROJECT_PATH.replace('src', ''), 'artifacts')
 os.environ['ARTIFACTS_PATH'] = ARTIFACTS_PATH
 
 app = Flask(__name__, instance_relative_config=True)
+
 cache = Cache()
 app.config['CACHE_TYPE'] = 'simple'
 cache.init_app(app)
@@ -35,26 +36,36 @@ cache.init_app(app)
 #@cache.cached()
 def home():
     if request.method == 'POST':
-        start_time = time.time()
         company_name = request.form['company_name']
         logger.info(company_name)
 
-        # get news
-        google = GoogleNews()
-        news_link, keyword = google.get_news(keyword=company_name)
+        news_link, keyword = get_google_news(company_name)
         if not news_link:
             return render_template('empty_search.html', name=company_name)
 
-        #group the news in list of list of 4 elements to display them when rendering the template
-        news_link = [news_link[n:n+4] for n in range(0, len(news_link), 4)]
-        template_args = dict(name=company_name, news_link=news_link)
         return redirect(url_for('news'))
     else:
         return render_template('home.html', title='HOME')
 
+#cache the result
+@cache.memoize()
+def get_google_news(company_name):
+    google = GoogleNews()
+    news_link, keyword = google.get_news(keyword=company_name)
+    cache.set('news_link', news_link)
+    cache.set('keyword', keyword)
+    return news_link, keyword
+
 @app.route('/news')
 def news():
-    template_args={}
+    #get results from cache
+    company_name = cache.get('keyword')
+    news_link = cache.get('news_link')
+    if not news_link: 
+        template_args = {}
+        return render_template('news.html', **template_args)
+    news_link = [news_link[n:n+4] for n in range(0, len(news_link), 4)]
+    template_args = dict(name=company_name, news_link=news_link)
     return render_template('news.html', **template_args)
 
 @app.route('/word_cloud')
