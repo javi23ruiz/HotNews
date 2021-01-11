@@ -11,8 +11,7 @@ Nowadays there are a wide range of different sources of information. If an indiv
 2. Podcast generator: Module to generate a .mp3 file with the audio of the summary of the news. 
 3. The News are generated using several APIs:
     - NEWS API: HTTP REST API for searching and retrieving articles all over the web. The free version is           implemented in this application, therefore you can only go back in time one month. The articles are ranked by relevancy and by default the application returns 10 articles. A keyword must be specified by the user to search for that specific company. 
-    - Bloomberg API: 
-    - 
+
 
 ## Installation
 
