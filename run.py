@@ -62,7 +62,6 @@ def news():
     #get results from cache
     company_name = cache.get('keyword')
     news_link = cache.get('news_link')
-    print(news_link)
     if not news_link: 
         template_args = {}
         return render_template('news.html', **template_args)
@@ -77,7 +76,10 @@ def word_cloud():
         company_name = cache.get('keyword')
         news_link = cache.get('news_link')
 
-
+        #get word cloud
+        word_cloud = WordCloudGenerator(keyword=company_name)
+        save_name = word_cloud.generate_word_cloud(news_link, plot=False)
+        logger.info(f"Save name::: {save_name}")
     return render_template('word_cloud.html', title='Word Cloud')
 
 @app.route('/podcast', methods=['GET', 'POST'])

@@ -136,3 +136,6 @@ instance/
 
 # output audios
 output/
+
+# .DS_Store
+.DS_Store
