@@ -51,7 +51,7 @@ def home():
 @cache.memoize()
 def get_google_news(company_name):
     google = GoogleNews()
-    news_link, keyword = google.get_news(keyword=company_name)
+    news_link, keyword = google.get_news(keyword=company_name, num_links=8)
     cache.set('news_link', news_link)
     cache.set('keyword', keyword)
     return news_link, keyword
@@ -72,54 +72,43 @@ def news():
 def word_cloud():
     return render_template('word_cloud.html', title='Word Cloud')
 
-@app.route('/podcast')
+@app.route('/podcast', methods=['GET', 'POST'])
 def podcast():
-    return render_template('podcast.html', title='Podcast')
-
-@app.route('/email')
-def email():
-    return render_template('email.html', title='Email')
-
-
-
-
-####################
-@app.route('/newsold', methods=['POST'])
-def news_old():
     if request.method == 'POST':
         start_time = time.time()
-        send_mail = True
+        #get results from cache
+        company_name = cache.get('keyword')
+        news_link = cache.get('news_link')
+        #instanciate Parrot Class
+        parrot = Parrot()
+        parrot.generate_audio(news_link=news_link, keyword=company_name)
+        logger.info("Audio generated")
+        logger.info(f"Main program finished successfully in {round(time.time() - start_time, 4)} seconds")
+    return render_template('podcast.html', title='Podcast')
+
+@app.route('/email', methods=['GET', 'POST'])
+def email():
+    if request.method == 'POST':
+        start_time = time.time()
         email = request.form['email']
+        logger.info(f"Email To: {email}")
+        send_mail = True
         if email == '' or '@' not in email:
             logger.warning(f"Email address not valid, email will not be sent.")
             send_mail = False
 
-        logger.info(f"Email: {email}")
-        company_name = request.form['company_name']
-        logger.info(company_name)
-
-        # get news
-        google = GoogleNews()
-        news_link, keyword = google.get_news(keyword=company_name)
-        if not news_link:
-            return render_template('empty_search.html', name=company_name)
+        #get results from cache
+        company_name = cache.get('keyword')
+        news_link = cache.get('news_link')
 
         # send mail
         if send_mail:
             mail = EmailSender(keyword=company_name, email_to=email)
             if mail.send_email_with_news(news_link_info=news_link):
-                parrot = Parrot()
-                parrot.generate_audio(news_link=news_link, keyword=company_name)
-                logger.info("Audio generated")
                 logger.info(f"Main program finished successfully in {round(time.time() - start_time, 4)} seconds")
             else:
                 logger.info("Error sending the email")
-
-        #group the news in list of list of 4 elements to display them when rendering the template
-        news_link = [news_link[n:n+4] for n in range(0, len(news_link), 4)]
-        template_args = dict(name=company_name, news_link=news_link)
-
-    return render_template('news.html', **template_args)
+    return render_template('email.html', title='Email')
 
 
 if __name__ == '__main__':

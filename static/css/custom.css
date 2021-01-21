@@ -1,10 +1,9 @@
 h1 {
-    text-align: center;
-    margin: 0px auto;
-}
+    color: rgb(60, 255, 0);
+  }
 
 body {
-    background-image: url("{{ url_for ('static', filename='images/javier.jpg')}}");
+    background-image: url("{{url_for ('static', filename='images/javier.jpg')}}");
 }
 
 .test{
