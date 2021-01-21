@@ -12,6 +12,7 @@ logging.basicConfig(level=logging.INFO, format=log_formatter, datefmt='%d-%m-%y 
 from myproject.api_news.google_news_api import GoogleNews
 from myproject.mail_manager.send_mail import EmailSender
 from myproject.text2speech.get_voice_from_text import Parrot
+from myproject.word_cloud.wordcloud_generator import WordCloud
 
 #environment variables
 PROJECT_PATH = os.path.dirname(os.path.abspath(__file__))
@@ -61,6 +62,7 @@ def news():
     #get results from cache
     company_name = cache.get('keyword')
     news_link = cache.get('news_link')
+    print(news_link)
     if not news_link: 
         template_args = {}
         return render_template('news.html', **template_args)
@@ -68,8 +70,14 @@ def news():
     template_args = dict(name=company_name, news_link=news_link)
     return render_template('news.html', **template_args)
 
-@app.route('/word_cloud')
+@app.route('/word_cloud', methods=['GET', 'POST'])
 def word_cloud():
+    if request.method == 'POST':
+        #get cache data
+        company_name = cache.get('keyword')
+        news_link = cache.get('news_link')
+
+
     return render_template('word_cloud.html', title='Word Cloud')
 
 @app.route('/podcast', methods=['GET', 'POST'])
