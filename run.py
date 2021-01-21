@@ -12,7 +12,7 @@ logging.basicConfig(level=logging.INFO, format=log_formatter, datefmt='%d-%m-%y 
 from myproject.api_news.google_news_api import GoogleNews
 from myproject.mail_manager.send_mail import EmailSender
 from myproject.text2speech.get_voice_from_text import Parrot
-from myproject.word_cloud.wordcloud_generator import WordCloud
+from myproject.word_cloud.wordcloud_generator import WordCloudGenerator
 
 #environment variables
 PROJECT_PATH = os.path.dirname(os.path.abspath(__file__))
