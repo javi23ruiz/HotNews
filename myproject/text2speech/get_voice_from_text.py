@@ -42,19 +42,19 @@ class Parrot:
             # make request to google 
             podcast = gtts.gTTS(podcast_text, lang=self.language)
 
-            download_folder = os.path.join(os.getenv('PROJECT_PATH').replace('src', ''), 'output')
+            download_folder = os.path.join(os.getenv('PROJECT_PATH').replace('src', ''), 'static/audio')
             save_name = "_".join([keyword, day, month, year])
             download_name = os.path.join(download_folder, f"{save_name}.mp3")
             podcast.save(download_name)
             logger.info(f"Podcast generated and saved in {round(time.time() - start_time, 4)} seconds")
             #playsound("hello.mp3")
-            return True
+            return True, f"{save_name}.mp3"
 
         except gTTSError as e:
             logger.info(f"Error generating the audio in the Parrot class: {e}")
             # TODO: display gtts.tts.gTTSError: 502 (Bad Gateway) from TTS API. 
             # Probable cause: Uptream API error. Try again later. If this error occurrs
-            return False
+            return False, ''
     
         
 

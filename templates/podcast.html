@@ -11,31 +11,16 @@
 </div>
 
 <form method="post">
-    <!--div class="form-group">
-        <label for="exampleInputEmail1">Email address</label>
-        <input type="email" class="form-control" name=email id="exampleInputEmail1" placeholder="name@example.com" aria-describedby="emailHelp">
-        <small id="email" class="form-text text-muted">We'll never share your email with anyone else.</small>
-    </div-->
     <button type="submit" class="btn btn-primary btn-lg">Create Podcast</button>
-    <!--button type="submit" class="btn btn-primary">Submit</button-->
 </form>
 
-<div class="card">
-    <img class="card-img-top mp3-cover" src="https://www.stockvault.net/data/2017/09/30/239530/thumb16.jpg" alt="Card image cap">
-    <div class="card-block">
-      <h4 class="card-title">Lovekickone</h4>
-      <p class="card-text">neon</p>
-      <div class="mp3-audio">
-        <audio controls class="mp3-auido">
-          <!--source src="http://blog.landr.com/wp-content/uploads/2017/07/LANDR-WAVY-neon.wav" type="audio/mpeg"-->
-          <source src="Apple_10_January_2021.mp3" type="audio/mpeg">
-          <!--source src="audio/lp_78_am_guitar_funk_reggae.ogg" type="audio/ogg"-->
-          <!--source src="audio/lp_78_am_guitar_funk_reggae.wav" type="audio/wav"-->
-          Your browser does not support the audio element.
-       </audio>
-      </div>
-    </div>
-</div>
+<audio controls>
+  <!--source src="output/Tesla_29_November_2020.ogg" type="audio/ogg"-->
+  <!--source src="url_for('output', 'Apple_23_January_2021.mp3')" type="audio/mpeg"-->
+  <source src="{{audio_file}}" type="audio/mpeg">
+  <!--source src="{{ url_for('static', filename='audio/NVIDIA_23_January_2021.mp3') }}" type="audio/mpeg"-->
+Your browser does not support the audio element.
+</audio>
 
 
 {%endblock content%}
