@@ -51,7 +51,7 @@ class WordCloudGenerator:
         save_name = "_".join([self.keyword, day, month, year]) + '.png'
         download_folder = os.path.join(os.getenv('PROJECT_PATH').replace('src', ''), 'static/images')
         word_cloud.to_file(os.path.join(download_folder, save_name))
-        logger.info("Word cloud image sucessfully saved with the name: {save_name}")
+        logger.info(f"Word cloud image sucessfully saved with the name: {save_name}")
         if plot:
             # plot the WordCloud image                        
             plt.figure(figsize = (8, 8), facecolor=None) 

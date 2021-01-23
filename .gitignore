@@ -139,3 +139,6 @@ output/
 
 # .DS_Store
 .DS_Store
+
+# images in static
+static/images

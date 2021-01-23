@@ -75,12 +75,23 @@ def word_cloud():
         #get cache data
         company_name = cache.get('keyword')
         news_link = cache.get('news_link')
-
         #get word cloud
         word_cloud = WordCloudGenerator(keyword=company_name)
         save_name = word_cloud.generate_word_cloud(news_link, plot=False)
         logger.info(f"Save name::: {save_name}")
-    return render_template('word_cloud.html', title='Word Cloud')
+        template_args = dict(image_file=url_for("static", filename=os.path.join('images', save_name)), 
+                            title='Word Cloud')
+        # cache results of the image_path                   
+        cache.set('wordcloud_path', os.path.join('images', save_name))
+        return render_template('word_cloud.html', **template_args)
+    else:
+        try: 
+            template_args = dict(image_file=url_for("static", filename=cache.get('wordcloud_path')), 
+                                title='Word Cloud')
+        except:
+            template_args = dict(image_file=url_for("static", filename=''), 
+                                title='Word Cloud')
+        return render_template('word_cloud.html', **template_args)
 
 @app.route('/podcast', methods=['GET', 'POST'])
 def podcast():
@@ -94,6 +105,7 @@ def podcast():
         parrot.generate_audio(news_link=news_link, keyword=company_name)
         logger.info("Audio generated")
         logger.info(f"Main program finished successfully in {round(time.time() - start_time, 4)} seconds")
+        return render_template('podcast.html', title='Podcast')
     return render_template('podcast.html', title='Podcast')
 
 @app.route('/email', methods=['GET', 'POST'])
