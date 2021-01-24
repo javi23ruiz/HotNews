@@ -6,21 +6,26 @@
     <p class="lead"> This section generates a podcast that you can listen to and download.</p>
     <ul class="list-group">
       <li> It usually takes between 20 - 30 seconds to generate the podcast</li>
+      <li> Before generating the podcast, first you have to generate the news by submitting the company name. Then click on create podcast.</li>
 
     </ul>
 </div>
 
 <form method="post">
-    <button type="submit" class="btn btn-primary btn-lg">Create Podcast</button>
+    <button type="submit" class="btn btn-primary" class="btn btn-primary btn-lg">Create Podcast</button>
 </form>
 
-<audio controls>
-  <!--source src="output/Tesla_29_November_2020.ogg" type="audio/ogg"-->
-  <!--source src="url_for('output', 'Apple_23_January_2021.mp3')" type="audio/mpeg"-->
-  <source src="{{audio_file}}" type="audio/mpeg">
-  <!--source src="{{ url_for('static', filename='audio/NVIDIA_23_January_2021.mp3') }}" type="audio/mpeg"-->
-Your browser does not support the audio element.
-</audio>
+<div class="card text-white bg-dark mb-3" style="width:500px">
+  <img class="card-img-top" src="{{ url_for('static', filename='images/podcast.png') }}" alt="Card image">
+  <div class="card-body">
+    <h4 class="card-title">PODCAST</h4>
+    <p class="card-text">Hit hte play button to listen to the podcast.</p>
+    <audio controls>
+      <source src="{{audio_file}}" type="audio/mpeg">
+    Your browser does not support the audio element.
+    </audio>    
+  </div>
+</div>
 
 
 {%endblock content%}

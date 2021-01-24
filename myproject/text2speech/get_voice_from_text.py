@@ -20,6 +20,9 @@ class Parrot:
         self.language = language
 
     def generate_audio(self, news_link, keyword):
+        #check if news_link is None to handle th eexception 
+        if news_link is None: 
+            return False, ''
 
         try: 
         #first concatenate all the text in one string to generate the podcast.
