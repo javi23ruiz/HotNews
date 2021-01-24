@@ -102,10 +102,12 @@ def podcast():
         news_link = cache.get('news_link')
         #instanciate Parrot Class
         parrot = Parrot()
-        parrot.generate_audio(news_link=news_link, keyword=company_name)
+        _, audio_name = parrot.generate_audio(news_link=news_link, keyword=company_name)
         logger.info("Audio generated")
         logger.info(f"Main program finished successfully in {round(time.time() - start_time, 4)} seconds")
-        return render_template('podcast.html', title='Podcast')
+        audio_file = url_for("static", filename=os.path.join('audio', audio_name))
+        template_args = dict(audio_file=audio_file, title='Podcast')
+        return render_template('podcast.html', **template_args)
     return render_template('podcast.html', title='Podcast')
 
 @app.route('/email', methods=['GET', 'POST'])

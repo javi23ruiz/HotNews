@@ -6,35 +6,25 @@
     <p class="lead"> This section generates a podcast that you can listen to and download.</p>
     <ul class="list-group">
       <li> It usually takes between 20 - 30 seconds to generate the podcast</li>
+      <li> Before generating the podcast, first you have to generate the news by submitting the company name. Then click on create podcast.</li>
 
     </ul>
 </div>
 
 <form method="post">
-    <!--div class="form-group">
-        <label for="exampleInputEmail1">Email address</label>
-        <input type="email" class="form-control" name=email id="exampleInputEmail1" placeholder="name@example.com" aria-describedby="emailHelp">
-        <small id="email" class="form-text text-muted">We'll never share your email with anyone else.</small>
-    </div-->
-    <button type="submit" class="btn btn-primary btn-lg">Create Podcast</button>
-    <!--button type="submit" class="btn btn-primary">Submit</button-->
+    <button type="submit" class="btn btn-primary" class="btn btn-primary btn-lg">Create Podcast</button>
 </form>
 
-<div class="card">
-    <img class="card-img-top mp3-cover" src="https://www.stockvault.net/data/2017/09/30/239530/thumb16.jpg" alt="Card image cap">
-    <div class="card-block">
-      <h4 class="card-title">Lovekickone</h4>
-      <p class="card-text">neon</p>
-      <div class="mp3-audio">
-        <audio controls class="mp3-auido">
-          <!--source src="http://blog.landr.com/wp-content/uploads/2017/07/LANDR-WAVY-neon.wav" type="audio/mpeg"-->
-          <source src="Apple_10_January_2021.mp3" type="audio/mpeg">
-          <!--source src="audio/lp_78_am_guitar_funk_reggae.ogg" type="audio/ogg"-->
-          <!--source src="audio/lp_78_am_guitar_funk_reggae.wav" type="audio/wav"-->
-          Your browser does not support the audio element.
-       </audio>
-      </div>
-    </div>
+<div class="card text-white bg-dark mb-3" style="width:500px">
+  <img class="card-img-top" src="{{ url_for('static', filename='images/podcast.png') }}" alt="Card image">
+  <div class="card-body">
+    <h4 class="card-title">PODCAST</h4>
+    <p class="card-text">Hit hte play button to listen to the podcast.</p>
+    <audio controls>
+      <source src="{{audio_file}}" type="audio/mpeg">
+    Your browser does not support the audio element.
+    </audio>    
+  </div>
 </div>
 
 
