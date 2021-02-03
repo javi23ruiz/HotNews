@@ -63,10 +63,10 @@ def news():
     company_name = cache.get('keyword')
     news_link = cache.get('news_link')
     if not news_link: 
-        template_args = {}
+        template_args = dict(name=None, news_link=None)
         return render_template('news.html', **template_args)
     news_link = [news_link[n:n+4] for n in range(0, len(news_link), 4)]
-    template_args = dict(name=company_name, news_link=news_link)
+    template_args = dict(name=company_name.upper(), news_link=news_link)
     return render_template('news.html', **template_args)
 
 @app.route('/word_cloud', methods=['GET', 'POST'])
@@ -75,6 +75,9 @@ def word_cloud():
         #get cache data
         company_name = cache.get('keyword')
         news_link = cache.get('news_link')
+        if news_link == None:
+            template_args = dict(image_file=None, title='Word Cloud')
+            return render_template('word_cloud.html', **template_args)
         #get word cloud
         word_cloud = WordCloudGenerator(keyword=company_name)
         save_name = word_cloud.generate_word_cloud(news_link, plot=False)
@@ -89,8 +92,7 @@ def word_cloud():
             template_args = dict(image_file=url_for("static", filename=cache.get('wordcloud_path')), 
                                 title='Word Cloud')
         except:
-            template_args = dict(image_file=url_for("static", filename=''), 
-                                title='Word Cloud')
+            template_args = dict(image_file=None, title='Word Cloud')
         return render_template('word_cloud.html', **template_args)
 
 @app.route('/podcast', methods=['GET', 'POST'])

@@ -1,8 +1,8 @@
 {% extends 'layouts.html'%}
 {% block content%}
-<!--h1>{{title}}</h1-->
+<!--tyle="background-image: url(https://mdbootstrap.com/img/Photos/Others/city7.jpg-->
 
-<div class="jumbotron">
+<div class="jumbotron" style="background-image: url({{ url_for('static', filename='images/newspapers.jpg') }});">
     <h1 class="display-4">Welcome to the Company Tracker</h1>
     <br>
     <p class="lead"> The news are retrieved from 

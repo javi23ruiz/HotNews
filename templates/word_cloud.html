@@ -12,6 +12,10 @@
     <button type="submit" class="btn btn-primary">Get Word Cloud</button>
 </form>
 <br>
-<img src="{{image_file}}" class="rounded mx-auto d-block" alt="Responsive image">
+{% if image_file is not none%}
+    <img src="{{image_file}}" class="rounded mx-auto d-block" alt="Responsive image">
+{% else %}
+    <p>Submit a company name and then plot the WordCloud</p>
+{% endif %}
 
 {%endblock content%}

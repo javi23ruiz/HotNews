@@ -1,14 +1,78 @@
 h1 {
-    color: rgb(60, 255, 0);
+    color: rgb(226, 59, 59);
+    text-align:center;
   }
 
-body {
-    background-image: url("{{url_for ('static', filename='images/javier.jpg')}}");
+h2 {
+    color: rgb(2, 2, 2);
+    text-align:center;
+  }
+
+li {
+    color: rgb(4, 51, 16);
 }
 
-.test{
-    display: block;
-    width: 300;
-    height: 300;
-    background: purple;
+.jumbotron {
+    background-image: "{{ url_for('static', filename='images/email.jpg') }}";
+}
+
+/*Center emial card*/
+
+.card text-white bg-dark mb-3{
+    text-align: center;
+}
+
+
+/* change the background color */
+.navbar-custom {
+    background-color: #050505;
+}
+/* change the brand and text color */
+.navbar-custom .navbar-brand,
+.navbar-custom .navbar-text {
+    color: #ee4400;
+    padding: 0.8rem 1rem;
+}
+/* change the link color and add padding for height */
+.navbar-custom .navbar-nav .nav-link {
+    color: red;
+    padding: 1rem 1rem;
+}
+/* change the color of active or hovered links */
+.navbar-custom .nav-item.active .nav-link,
+.navbar-custom .nav-item:hover .nav-link {
+    color: #dff70e;
+    background-color: #ee4400; /* add background-color to active links */
+}.navbar-custom {
+    background-color: #ff5500;
+}
+
+/* change the brand and text color */
+.navbar-custom .navbar-brand,
+.navbar-custom .navbar-text {
+    color: rgba(255,255,255,.8);
+}
+
+/* change the link color */
+.navbar-custom .navbar-nav .nav-link {
+    color: red;
+}
+
+/* change the color of active or hovered links */
+.navbar-custom .nav-item.active .nav-link,
+.navbar-custom .nav-item:hover .nav-link {
+    color: #ee4400;
+}
+
+/* for dropdown only - change the color of droodown */
+.navbar-custom .dropdown-menu {
+    background-color: #ff5500;
+}
+.navbar-custom .dropdown-item {
+    color: #ee4400;
+}
+.navbar-custom .dropdown-item:hover,
+.navbar-custom .dropdown-item:focus {
+    color: #333333;
+    background-color: rgba(255,255,255,.5);
 }
