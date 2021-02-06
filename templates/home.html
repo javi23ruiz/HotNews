@@ -1,33 +1,40 @@
 {% extends 'layouts.html'%}
+
 {% block content%}
 <!--tyle="background-image: url(https://mdbootstrap.com/img/Photos/Others/city7.jpg-->
-
-<div class="jumbotron" style="background-image: url({{ url_for('static', filename='images/newspapers.jpg') }});">
-    <h1 class="display-4">Welcome to the Company Tracker</h1>
+<!--style="background-image: url({{ url_for('static', filename='images/newspapers.jpg') }});-->
+<div class="jumbotron-home" >
+    <h1 class="display-4"><b><span>Welcome to the Company Tracker</span> </b> </h1>
     <br>
-    <p class="lead"> The news are retrieved from 
-        the NewsApi developed by Google. Please enter a company name and an email address. 
-        After the appplication is executed, an email will be sent and a podcast will be generated to listen to
-        the summary of the news.</p>
-    <ul>
-      <li> News are retrieved from Google News API and thery are filtered out by relevancy.</li>
-      <li> By default the application returns the 10 most important news from the last two weeks. </li>
-      <li> Enter a valid email address and an email with the summary of the news article and the links will be sent to you from tracker.news.web@gmail.com.</li>
-      <li> Enter the company name you would like to be updated with.</li>
+    <br>
+    <br>
+    <!--h4 class="lead"> <b>The news are retrieved from 
+      the NewsApi developed by Google. Please enter a company name and an email address. 
+      After the appplication is executed, an email will be sent and a podcast will be generated to listen to
+      the summary of the news.</b> </h4-->
+    <ul class="home">
+      <li> <h5><b>News are retrieved from Google News API and they are filtered by relevancy.</b> </h5> </li>
+      <li>  <h5><b>The application returns the 8 most important news from the last month.</b> </h5>  </li>
+      <li>  <h5><b>Enter the company name, hit submit and you would like redirected to the news blog.</b></h5> </li>
     </ul>
+
+    <br>
+    <br>
+    <br>
+    <div class="d-flex justify-content-center align-items-center container ">
+      <div class="row ">
+          <form method="post" action="">
+              <div class="form-group">
+                  <label for="inputUserName" class="control-label"> <b>ENTER COMPANY NAME</b>  </label>
+                  <input type="text" name=company_name class="form-control" id="inputCompanyName">
+              </div>
+              <div>
+                <button type="submit" class="btn btn-primary">  <b>Submit</b> </button>
+              </div>
+          </form>
+    
+      </div>
+    </div>
 </div>
 
-
-   <form method="post">
-    <!--div class="form-group">
-        <label for="exampleInputEmail1">Email address</label>
-        <input type="email" class="form-control" name=email id="exampleInputEmail1" placeholder="name@example.com" aria-describedby="emailHelp">
-        <small id="email" class="form-text text-muted">We'll never share your email with anyone else.</small>
-    </div-->
-    <div class="form-group">
-        <label for="exampleCompanyName">Company Name</label>
-        <input type="text" name=company_name class="form-control" id="company_name">
-    </div>
-    <button type="submit" class="btn btn-primary">Submit</button>
-  </form>
 {%endblock content%}

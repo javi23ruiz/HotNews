@@ -51,7 +51,8 @@ class GoogleNews:
             logger.info(f"Check API parameters. Can only go back in time for one month from today´s date.")
         elif result.json()['status'] != 'ok':
             logger.info(f"Error Message: {result.json()['message']}")
-            raise Exception('Error in the request of News API. No articles returned')
+            # raise Exception('Error in the request of News API. No articles returned')
+            return None, ''
 
         logging.info(f"Results found for News API: {result.json()['totalResults']}")
         #filter results
