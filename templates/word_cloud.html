@@ -6,12 +6,17 @@
     <p class="lead"> This section is used analyze the words with higher frequency to get e grasp of what´s happened with the company that you selected.</p>
     <ul class="list-group">
     </ul>
+    <form method="post">
+        <button type="submit" class="btn btn-primary">Get Word Cloud</button>
+    </form>
+    <br>
+    {% if image_file is not none%}
+        <img src="{{image_file}}" class="rounded mx-auto d-block" alt="Responsive image">
+    {% else %}
+        <p>Submit a company name and then plot the WordCloud</p>
+    {% endif %}
 </div>
 
-<form method="post">
-    <button type="submit" class="btn btn-primary">Get Word Cloud</button>
-</form>
-<br>
-<img src="{{image_file}}" class="rounded mx-auto d-block" alt="Responsive image">
+
 
 {%endblock content%}
