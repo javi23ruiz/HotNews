@@ -19,23 +19,44 @@ h4 {
     text-align:center;
   }
 
-ul.home {
+ul.home, ul.email{
     color:rgb(42, 42, 46);
-    opacity: 0.9;
+    opacity: 1;
     /*background-color: rgb(126, 126, 121);*/
 }
 
 /*Jumbotorn home*/
 .jumbotron-home {
-    background-image: url("news2.jpg");
+    background-image: url("news.jpg");
     color:white;
     background-attachment: fixed;
     min-height: 700px;
     margin-top: 0px;
     margin-bottom: 0px;
-    }   
+    }  
+    
+/*Jumbotorn email*/
 
-/*Submit bottom main page*/
+.jumbotron-email {  
+    background-image: url("email.jpg");
+    color:white;
+    background-attachment: fixed;
+    min-height: 700px;
+    margin-top: 0px;
+    margin-bottom: 0px;
+}
+
+/*Card email*/
+.card{
+    align-items: center;
+    margin-left: 33%;
+}
+
+.card-title-email{
+    color: whitesmoke
+}
+
+/*Submit bottom*/
 .btn {
     color: rgb(3, 3, 0);
     background-color: rgb(196, 95, 2);
@@ -67,7 +88,6 @@ ul.navbar-nav {
     overflow: hidden;
     background-color: #333;
   }
-
 
 li.nav-item
     {
