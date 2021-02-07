@@ -19,7 +19,7 @@ h4 {
     text-align:center;
   }
 
-ul.home, ul.email{
+ul.home, ul.email, ul.podcast{
     color:rgb(42, 42, 46);
     opacity: 1;
     /*background-color: rgb(126, 126, 121);*/
@@ -46,13 +46,21 @@ ul.home, ul.email{
     margin-bottom: 0px;
 }
 
+/*Jumbotorn podcast*/
+
+.jumbotron-podcast {  
+    background-image: url("podcast.jpeg");
+    background-size: cover;
+    min-height: 900px;
+}
+
 /*Card email*/
 .card{
     align-items: center;
     margin-left: 33%;
 }
 
-.card-title-email{
+.card-title-email, .card-title-podcast{
     color: whitesmoke
 }
 
