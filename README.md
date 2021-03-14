@@ -13,6 +13,11 @@ Nowadays there are a wide range of different sources of information. If an indiv
 5 **Text Summarization**: The text of every article is summarized and displayed for the user
 6. **Sentiment Analysis**: Once the news are retrieved, a sentiment analysis model will determine the sentiment of the headline. It can either be positive, neutral or negative. 
 
+| Column 1       | Column 2     | Column 3     |
+| :------------- | :----------: | -----------: |
+|  Cell Contents | More Stuff   | And Again    |
+| You Can Also   | Put Pipes In | Like this \| |
+
 
 ## Installation
 
