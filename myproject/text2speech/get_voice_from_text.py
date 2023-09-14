@@ -8,6 +8,8 @@ from datetime import datetime
 from num2words import num2words
 from playsound import playsound
 
+#from api_news.utils import get_summary
+
 #logging formatting
 log_formatter = '%(asctime)s %(levelname)s %(filename)s(%(lineno)d) ::: %(message)s'
 logger = logging.getLogger(__name__)
@@ -41,7 +43,18 @@ class Parrot:
                 news_text = f"The {num2words(num + 1, to='ordinal_num')} article is: \
                                         {news['title']}. The summary of this article \
                                         from the source {news['source']['name']} is the following. "
+                
+                #call hugging face model to summarize the podcast. 
+                #news_text = get_summary(news_text,
+                 #                       max_length=0.5*len(news_text), 
+                 #                       min_length=0.2*len(news_text)
+                 #                       )
+                
+                
+                
                 podcast_text += news_text + str(news['description'] or '')
+
+
             # make request to google 
             podcast = gtts.gTTS(podcast_text, lang=self.language)
 

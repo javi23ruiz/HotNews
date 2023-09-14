@@ -1,0 +1,25 @@
+version: '3'
+services:
+  flask-app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "4000:5000"  # Expose Flask app port
+    depends_on:
+      - redis
+
+  redis:
+    image: redis:latest  # Use the official Redis Docker image
+    ports:
+      - "6379:6379"  # Expose Redis port
+
+  postgres:
+    image: postgres:latest
+    container_name: my_postgres_db
+    environment:
+      POSTGRES_DB: myappdb
+      POSTGRES_USER: myappuser
+      POSTGRES_PASSWORD: myapppassword
+    ports:
+      - "5433:5432"

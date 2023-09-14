@@ -1,8 +1,17 @@
 import logging 
 import time
 import os
-from flask import Flask, render_template, request, current_app, redirect, url_for
+ 
+from flask import (Flask, 
+                   render_template,
+                   request, 
+                   session,
+                   jsonify,
+                   current_app, 
+                   redirect, 
+                   url_for)
 from flask_caching import Cache
+from flask_sqlalchemy import SQLAlchemy
 #logging formatting
 log_formatter = '%(asctime)s %(levelname)s %(filename)s(%(lineno)d) >>> %(message)s'
 logger = logging.getLogger(__name__)
@@ -22,6 +31,11 @@ os.environ['ARTIFACTS_PATH'] = ARTIFACTS_PATH
 
 app = Flask(__name__, instance_relative_config=True)
 
+
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://username:password@localhost/database_name'
+db = SQLAlchemy(app)
+
+
 cache = Cache()
 app.config['CACHE_TYPE'] = 'simple'
 cache.init_app(app)
@@ -31,7 +45,45 @@ cache.init_app(app)
 # print(app.config['EMAIL_FROM_PASSWORD'])
 #print(app.config)
 # TODO : Set Configuration
+#############
+from werkzeug.security import generate_password_hash, check_password_hash
 
+class User(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(80), unique=True, nullable=False)
+    password_hash = db.Column(db.String(128), nullable=False)
+
+    def set_password(self, password):
+        self.password_hash = generate_password_hash(password)
+
+    def check_password(self, password):
+        return check_password_hash(self.password_hash, password)
+
+@app.route('/register', methods=['POST'])
+def register():
+    username = request.json.get('username')
+    password = request.json.get('password')
+    user = User(username=username)
+    user.set_password(password)
+    db.session.add(user)
+    db.session.commit()
+    return jsonify({'message': 'User registered successfully'}), 201
+
+@app.route('/login', methods=['POST'])
+def login():
+    username = request.json.get('username')
+    password = request.json.get('password')
+    user = User.query.filter_by(username=username).first()
+    if user and user.check_password(password):
+        session['user_id'] = user.id
+        return jsonify({'message': 'Login successful'}), 200
+    return jsonify({'message': 'Invalid credentials'}), 401
+
+@app.route('/logout')
+def logout():
+    session.pop('user_id', None)
+    return jsonify({'message': 'Logged out successfully'}), 200
+#############
 @app.route('/', methods=['POST', 'GET'])
 @app.route('/home', methods=['POST', 'GET'])
 #@cache.cached()
@@ -138,7 +190,7 @@ def email():
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(host='0.0.0.0', port=5000, debug=True)
 
 
 

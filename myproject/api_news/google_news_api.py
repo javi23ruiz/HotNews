@@ -31,7 +31,7 @@ class GoogleNews:
         #check dates format
         self.check_date_formats(from_date=from_date, to_date=to_date)
 
-        url = f"https://newsapi.org/v2/everything?q={keyword}&from={from_date}&to={to_date}&sortBy={sort_by}&apiKey={self.api_key}"
+        url = f"https://newsapi.org/v2/everything?q={keyword}&from={from_date}&to={to_date}&sortBy={sort_by}&language=en&apiKey={self.api_key}"
         logging.info(f"url for news pai: {url}")
         result = requests.get(url)
         #check status of the response 

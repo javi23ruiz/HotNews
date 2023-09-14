@@ -21,3 +21,6 @@ Werkzeug==1.0.1
 Flask-Caching==2.0.2
 matplotlib==3.7.0
 wordcloud==1.9.1.1
+flask_sqlalchemy==3.1.1
+psycopg2==2.9.7
+passlib==1.7.4
