@@ -127,3 +127,18 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+# Visual Studio Configuration
+.vscode/
+
+# Flask app
+instance/
+
+# output audios
+output/
+
+# .DS_Store
+.DS_Store
+
+# images in static
+static/images

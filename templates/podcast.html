@@ -1,0 +1,38 @@
+{% extends 'layouts.html'%}
+{% block content%}
+<div class="jumbotron-podcast">
+    <h2 class="display-4"> <b>PODCAST</b> </h2>
+    <br>
+    <ul class="podcast">
+      <li><h5><b>This section generates a podcast that you can listen to and download.</b></h5></li>
+      <li> <h5><b>It usually takes between 20 - 30 seconds to generate the podcast</b></h5>  </li>
+      <li> <h5><b>Before generating the podcast, first you have to generate the news by submitting the company name. Then click on create podcast.</b></h5> </li>
+    </ul>
+
+  <!--form method="post">
+      <button type="submit" class="btn btn-primary" class="btn btn-primary btn-lg">Create Podcast</button>
+  </form-->
+  <br>
+  <br>
+  <div class="card text-white bg-dark mb-3" style="width:500px">
+    <br>
+    <form method="post">
+      <button type="submit" class="btn btn-primary" class="btn btn-primary btn-lg">Create Podcast</button>
+    </form>
+    <!--img class="card-img-top" src="{{ url_for('static', filename='images/podcast.png') }}" alt="Card image"-->
+    <div class="card-body">
+      <h4 class="card-title-podcast">PODCAST</h4>
+      <p class="card-text">Hit the play button to listen to the podcast.</p>
+      <audio controls>
+        <source src="{{audio_file}}" type="audio/mpeg">
+      Your browser does not support the audio element.
+      </audio>    
+    </div>
+  </div>
+
+</div>
+
+
+
+
+{%endblock content%}

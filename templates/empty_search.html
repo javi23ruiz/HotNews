@@ -1,0 +1,23 @@
+{% extends 'layouts.html'%}
+{% block content%}
+<!--h1>{{title}}</h1-->
+
+<div class="jumbotron">
+
+    {% if name is not none%}
+    <h2 class="display-4">NO NEWS FOUND FOR {{ name }}</h2>
+    {% else %}
+        <h1 class="display-4">NO NEWS FOUND</h1>
+    {% endif %}
+    
+    <br>
+    <h3 class="lead"> Unfortunately, we haven´t found any news when try to retrieve them from th Google News API. 
+        Please try later or submit your search with another company name. Click again on Company Tracker to go to the main page</h3>
+</div>
+{%endblock content%}
+
+
+
+
+
+

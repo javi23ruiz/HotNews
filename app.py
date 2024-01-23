@@ -1,0 +1,197 @@
+import logging 
+import time
+import os
+ 
+from flask import (Flask, 
+                   render_template,
+                   request, 
+                   session,
+                   jsonify,
+                   current_app, 
+                   redirect, 
+                   url_for)
+from flask_caching import Cache
+from flask_sqlalchemy import SQLAlchemy
+#logging formatting
+log_formatter = '%(asctime)s %(levelname)s %(filename)s(%(lineno)d) >>> %(message)s'
+logger = logging.getLogger(__name__)
+logging.basicConfig(level=logging.INFO, format=log_formatter, datefmt='%d-%m-%y %H:%M:%S')
+
+##app imports
+from myproject.api_news.google_news_api import GoogleNews
+from myproject.mail_manager.send_mail import EmailSender
+from myproject.text2speech.get_voice_from_text import Parrot
+from myproject.word_cloud.wordcloud_generator import WordCloudGenerator
+
+#environment variables
+PROJECT_PATH = os.path.dirname(os.path.abspath(__file__))
+os.environ['PROJECT_PATH'] = PROJECT_PATH
+ARTIFACTS_PATH = os.path.join(PROJECT_PATH.replace('src', ''), 'artifacts')
+os.environ['ARTIFACTS_PATH'] = ARTIFACTS_PATH
+
+app = Flask(__name__, instance_relative_config=True)
+
+
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://username:password@localhost/database_name'
+db = SQLAlchemy(app)
+
+
+cache = Cache()
+app.config['CACHE_TYPE'] = 'simple'
+cache.init_app(app)
+#app.config.from_object('config')
+# app.config.from_pyfile('config.py')
+# print(app.config['GOOGLE_API_KEY'])
+# print(app.config['EMAIL_FROM_PASSWORD'])
+#print(app.config)
+# TODO : Set Configuration
+#############
+from werkzeug.security import generate_password_hash, check_password_hash
+
+class User(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(80), unique=True, nullable=False)
+    password_hash = db.Column(db.String(128), nullable=False)
+
+    def set_password(self, password):
+        self.password_hash = generate_password_hash(password)
+
+    def check_password(self, password):
+        return check_password_hash(self.password_hash, password)
+
+@app.route('/register', methods=['POST'])
+def register():
+    username = request.json.get('username')
+    password = request.json.get('password')
+    user = User(username=username)
+    user.set_password(password)
+    db.session.add(user)
+    db.session.commit()
+    return jsonify({'message': 'User registered successfully'}), 201
+
+@app.route('/login', methods=['POST'])
+def login():
+    username = request.json.get('username')
+    password = request.json.get('password')
+    user = User.query.filter_by(username=username).first()
+    if user and user.check_password(password):
+        session['user_id'] = user.id
+        return jsonify({'message': 'Login successful'}), 200
+    return jsonify({'message': 'Invalid credentials'}), 401
+
+@app.route('/logout')
+def logout():
+    session.pop('user_id', None)
+    return jsonify({'message': 'Logged out successfully'}), 200
+#############
+@app.route('/', methods=['POST', 'GET'])
+@app.route('/home', methods=['POST', 'GET'])
+#@cache.cached()
+def home():
+    if request.method == 'POST':
+        company_name = request.form['company_name']
+        logger.info(company_name)
+
+        news_link, keyword = get_google_news(company_name)
+        if not news_link:
+            return render_template('empty_search.html', name=company_name)
+
+        return redirect(url_for('news'))
+    else:
+        return render_template('home.html', title='HOME')
+
+#cache the result
+@cache.memoize()
+def get_google_news(company_name):
+    google = GoogleNews()
+    news_link, keyword = google.get_news(keyword=company_name, num_links=8)
+    cache.set('news_link', news_link)
+    cache.set('keyword', keyword)
+    return news_link, keyword
+
+@app.route('/news')
+def news():
+    #get results from cache
+    company_name = cache.get('keyword')
+    news_link = cache.get('news_link')
+    if not news_link: 
+        template_args = dict(name=None, news_link=None)
+        return render_template('news.html', **template_args)
+    news_link = [news_link[n:n+4] for n in range(0, len(news_link), 4)]
+    template_args = dict(name=company_name.upper(), news_link=news_link)
+    return render_template('news.html', **template_args)
+
+@app.route('/word_cloud', methods=['GET', 'POST'])
+def word_cloud():
+    if request.method == 'POST':
+        #get cache data
+        company_name = cache.get('keyword')
+        news_link = cache.get('news_link')
+        if news_link == None:
+            template_args = dict(image_file=None, title='Word Cloud')
+            return render_template('word_cloud.html', **template_args)
+        #get word cloud
+        word_cloud = WordCloudGenerator(keyword=company_name)
+        save_name = word_cloud.generate_word_cloud(news_link, plot=False)
+        logger.info(f"Save name::: {save_name}")
+        template_args = dict(image_file=url_for("static", filename=os.path.join('images', save_name)), 
+                            title='Word Cloud')
+        # cache results of the image_path                   
+        cache.set('wordcloud_path', os.path.join('images', save_name))
+        return render_template('word_cloud.html', **template_args)
+    else:
+        try: 
+            template_args = dict(image_file=url_for("static", filename=cache.get('wordcloud_path')), 
+                                title='Word Cloud')
+        except:
+            template_args = dict(image_file=None, title='Word Cloud')
+        return render_template('word_cloud.html', **template_args)
+
+@app.route('/podcast', methods=['GET', 'POST'])
+def podcast():
+    if request.method == 'POST':
+        start_time = time.time()
+        #get results from cache
+        company_name = cache.get('keyword')
+        news_link = cache.get('news_link')
+        #instanciate Parrot Class
+        parrot = Parrot()
+        _, audio_name = parrot.generate_audio(news_link=news_link, keyword=company_name)
+        logger.info("Audio generated")
+        logger.info(f"Main program finished successfully in {round(time.time() - start_time, 4)} seconds")
+        audio_file = url_for("static", filename=os.path.join('audio', audio_name))
+        template_args = dict(audio_file=audio_file, title='Podcast')
+        return render_template('podcast.html', **template_args)
+    return render_template('podcast.html', title='Podcast')
+
+@app.route('/email', methods=['GET', 'POST'])
+def email():
+    if request.method == 'POST':
+        start_time = time.time()
+        email = request.form['email']
+        logger.info(f"Email To: {email}")
+        send_mail = True
+        if email == '' or '@' not in email:
+            logger.warning(f"Email address not valid, email will not be sent.")
+            send_mail = False
+
+        #get results from cache
+        company_name = cache.get('keyword')
+        news_link = cache.get('news_link')
+
+        # send mail
+        if send_mail:
+            mail = EmailSender(keyword=company_name, email_to=email)
+            if mail.send_email_with_news(news_link_info=news_link):
+                logger.info(f"Main program finished successfully in {round(time.time() - start_time, 4)} seconds")
+            else:
+                logger.info("Error sending the email")
+    return render_template('email.html', title='Email')
+
+
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=5000, debug=True)
+
+
+
+

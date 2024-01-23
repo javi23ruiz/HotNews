@@ -1,0 +1,38 @@
+{% extends 'layouts.html'%}
+{% block content%}
+<div class="jumbotron jumbotron-fluid">
+    <div class="container">
+        {% if name is not none%}
+            <h2 class="display-4">NEWS BLOG {{ name }}</h2>
+        {% else %}
+            <h2 class="display-4">NEWS BLOG</h2>
+        {% endif %}
+    </div>
+</div>
+
+{% if news_link is not none%}
+    {% for group_news_link in news_link %}
+
+        <div class="card-deck">
+            {% for link in group_news_link %}
+                <div class="card">
+                    <img class="card-img-top" src={{link.urlToImage}} alt="Card image cap">
+                    <div class="card-body">
+                        <h5 class="card-title"> <a href={{link.url}}></h5>{{link.title}}</a>
+                        <p class="card-text"> {{link.description}} </p>
+                        <p class="card-text"><small class="text-muted"> {{link.publishedAt}} </small></p>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+
+        <br>
+
+    {% endfor %}
+
+{% else %}
+    <h4>Please, first submit a company name and you will be redirected to this view with all the articles that were found.</h4>
+{% endif %}
+
+{%endblock content%}
+

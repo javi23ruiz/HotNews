@@ -1,0 +1,40 @@
+{% extends 'layouts.html'%}
+
+{% block content%}
+<!--tyle="background-image: url(https://mdbootstrap.com/img/Photos/Others/city7.jpg-->
+<!--style="background-image: url({{ url_for('static', filename='images/newspapers.jpg') }});-->
+<div class="jumbotron-home" >
+    <h1 class="display-4"><b><span>Welcome to the Company Tracker</span> </b> </h1>
+    <br>
+    <br>
+    <br>
+    <!--h4 class="lead"> <b>The news are retrieved from 
+      the NewsApi developed by Google. Please enter a company name and an email address. 
+      After the appplication is executed, an email will be sent and a podcast will be generated to listen to
+      the summary of the news.</b> </h4-->
+    <ul class="home">
+      <li> <h5><b>News are retrieved from Google News API and they are filtered by relevancy.</b> </h5> </li>
+      <li>  <h5><b>The application returns the 8 most important news from the last month.</b> </h5>  </li>
+      <li>  <h5><b>Enter the company name, hit submit and you would like redirected to the news blog.</b></h5> </li>
+    </ul>
+
+    <br>
+    <br>
+    <br>
+    <div class="d-flex justify-content-center align-items-center container ">
+      <div class="row ">
+          <form method="post" action="">
+              <div class="form-group">
+                  <label for="inputUserName" class="control-label"> <b>ENTER COMPANY NAME</b>  </label>
+                  <input type="text" name=company_name class="form-control" id="inputCompanyName">
+              </div>
+              <div>
+                <button type="submit" class="btn btn-primary">  <b>Submit</b> </button>
+              </div>
+          </form>
+    
+      </div>
+    </div>
+</div>
+
+{%endblock content%}
